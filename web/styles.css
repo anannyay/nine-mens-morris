@@ -1,0 +1,63 @@
+:root{
+  --bg: #0d0f1a;
+  --bg2:#111426;
+  --panel:#171b2f;
+  --text:#e8eaf6;
+  --muted:#a0a6c3;
+  --accent:#ffd700;
+  --accent2:#7dd3fc;
+  --white:#f5f7ff;
+  --black:#0b0b0f;
+  --line:#c8d0ff33;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: radial-gradient(1000px 600px at 20% -10%, #1a1f37 0%, transparent 60%),
+              radial-gradient(1200px 800px at 100% 0%, #11162c 0%, transparent 70%),
+              linear-gradient(180deg, var(--bg), var(--bg2));
+  color:var(--text);
+}
+.app{ max-width:1100px; margin:0 auto; padding:24px; }
+.app__header{ display:flex; flex-wrap:wrap; align-items:center; gap:16px; justify-content:space-between; margin-bottom:12px; }
+.app__header h1{ margin:0; font-weight:800; letter-spacing:0.5px; font-size:clamp(22px, 3vw, 30px); }
+.controls{ display:flex; flex-wrap:wrap; gap:10px 16px; align-items:end; }
+.control-group{ display:flex; flex-direction:column; gap:6px; background:linear-gradient(180deg, #1a2040 0%, #14182e 100%); padding:10px 12px; border-radius:10px; border:1px solid #27306a; box-shadow: inset 0 0 0 1px #0b0e1f; }
+.control-group--buttons{ flex-direction:row; align-items:center; gap:8px; }
+label{ font-size:12px; color:var(--muted); }
+select, button{
+  background: #0f1330; color:var(--text); border:1px solid #2a3474; border-radius:8px;
+  padding:8px 10px; font-weight:600; letter-spacing:0.3px; outline:none;
+}
+select:focus, button:focus{ box-shadow: 0 0 0 2px #2f3cb3; }
+button{ background: linear-gradient(180deg, #1d2352, #0f1330); cursor:pointer; transition: transform .06s ease, box-shadow .2s ease; }
+button:hover{ transform: translateY(-1px); box-shadow: 0 6px 18px -6px #000000cc, 0 0 0 1px #2a3474 inset; }
+button#hintBtn{ background: linear-gradient(180deg, #0a2a2a, #071a1a); border-color:#1d6b6b; }
+button#newGameBtn{ background: linear-gradient(180deg, #26320a, #141a07); border-color:#577323; }
+
+.app__main{ display:grid; grid-template-columns: 1fr; gap:14px; align-items:start; }
+.status{ background:#10142c; border:1px solid #232c6b; border-radius:12px; padding:10px 12px; color:#d6dcff; font-weight:600; }
+.board{ position:relative; width:100%; aspect-ratio:1/1; background: radial-gradient(600px 600px at center, #0b0f20 0%, #0b0f20 40%, transparent 70%), linear-gradient(180deg, #0c1024, #0a0e1f); border:1px solid #1a1f4a; border-radius:16px; box-shadow: inset 0 0 0 1px #0a0d1d; }
+svg.board-svg{ width:100%; height:100%; display:block; }
+
+.board line.edge{ stroke: #a9b3ff44; stroke-width:2; }
+.board circle.point{ fill: #0a0d25; stroke:#a3b1ff66; stroke-width:2; }
+.board circle.point.target{ stroke: var(--accent); filter: drop-shadow(0 0 6px rgba(255,215,0,.5)); }
+.board circle.point.selected{ stroke: var(--accent2); filter: drop-shadow(0 0 8px rgba(125,211,252,.6)); }
+
+.piece{ pointer-events:none; }
+.piece.white{ fill: var(--white); stroke:#c7d2fe; stroke-width:1.5; }
+.piece.black{ fill: var(--black); stroke:#111; stroke-width:1.5; }
+.piece.ghost{ fill: #6b7280; opacity:.6; }
+
+.toast{ position:absolute; inset:auto 12px 12px auto; background:#0b0f26cc; border:1px solid #2a3474; color:#e4e7ff; padding:10px 12px; border-radius:10px; backdrop-filter: blur(8px); }
+
+/* Confetti */
+.confetti-container{ position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+.confetti{ position:absolute; width:10px; height:14px; opacity:0; transform: translateY(-100px) rotate(0deg); will-change: transform, opacity; }
+@keyframes confetti-fall{ 0%{opacity:1; transform: translateY(-100px) rotate(0deg);} 100%{opacity:0; transform: translateY(120vh) rotate(720deg);} }
+
+@media (max-width: 700px){
+  .controls{ justify-content:flex-start; }
+}
