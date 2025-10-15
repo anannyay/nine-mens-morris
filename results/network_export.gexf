@@ -1,0 +1,387 @@
+<?xml version='1.0' encoding='utf-8'?>
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd" version="1.2">
+  <meta lastmodifieddate="2025-10-15">
+    <creator>NetworkX 3.5</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="static" name="">
+    <attributes mode="static" class="node">
+      <attribute id="0" title="influence" type="double" />
+    </attributes>
+    <nodes>
+      <node id="0" label="0">
+        <attvalues>
+          <attvalue for="0" value="1.3899118750843344" />
+        </attvalues>
+      </node>
+      <node id="2" label="2">
+        <attvalues>
+          <attvalue for="0" value="1.3918505354375157" />
+        </attvalues>
+      </node>
+      <node id="9" label="9">
+        <attvalues>
+          <attvalue for="0" value="1.7953028133823188" />
+        </attvalues>
+      </node>
+      <node id="11" label="11">
+        <attvalues>
+          <attvalue for="0" value="1.7028755548408194" />
+        </attvalues>
+      </node>
+      <node id="17" label="17">
+        <attvalues>
+          <attvalue for="0" value="1.126062443603706" />
+        </attvalues>
+      </node>
+      <node id="38" label="38">
+        <attvalues>
+          <attvalue for="0" value="1.9341814069461931" />
+        </attvalues>
+      </node>
+      <node id="1" label="1">
+        <attvalues>
+          <attvalue for="0" value="1.0077024283381952" />
+        </attvalues>
+      </node>
+      <node id="14" label="14">
+        <attvalues>
+          <attvalue for="0" value="1.9683135148318323" />
+        </attvalues>
+      </node>
+      <node id="35" label="35">
+        <attvalues>
+          <attvalue for="0" value="1.021622473442425" />
+        </attvalues>
+      </node>
+      <node id="45" label="45">
+        <attvalues>
+          <attvalue for="0" value="0.8862065543421721" />
+        </attvalues>
+      </node>
+      <node id="19" label="19">
+        <attvalues>
+          <attvalue for="0" value="1.1400871146537057" />
+        </attvalues>
+      </node>
+      <node id="20" label="20">
+        <attvalues>
+          <attvalue for="0" value="2.41580040252704" />
+        </attvalues>
+      </node>
+      <node id="24" label="24">
+        <attvalues>
+          <attvalue for="0" value="0.8024076793632324" />
+        </attvalues>
+      </node>
+      <node id="3" label="3">
+        <attvalues>
+          <attvalue for="0" value="1.0516290284390841" />
+        </attvalues>
+      </node>
+      <node id="40" label="40">
+        <attvalues>
+          <attvalue for="0" value="1.302709066080693" />
+        </attvalues>
+      </node>
+      <node id="49" label="49">
+        <attvalues>
+          <attvalue for="0" value="0.9347137335195599" />
+        </attvalues>
+      </node>
+      <node id="4" label="4">
+        <attvalues>
+          <attvalue for="0" value="2.0526852392476966" />
+        </attvalues>
+      </node>
+      <node id="16" label="16">
+        <attvalues>
+          <attvalue for="0" value="2.2176557107531596" />
+        </attvalues>
+      </node>
+      <node id="5" label="5">
+        <attvalues>
+          <attvalue for="0" value="3.88641226956579" />
+        </attvalues>
+      </node>
+      <node id="31" label="31">
+        <attvalues>
+          <attvalue for="0" value="1.5565244035390484" />
+        </attvalues>
+      </node>
+      <node id="37" label="37">
+        <attvalues>
+          <attvalue for="0" value="1.9534514718190277" />
+        </attvalues>
+      </node>
+      <node id="6" label="6">
+        <attvalues>
+          <attvalue for="0" value="2.5301700053633116" />
+        </attvalues>
+      </node>
+      <node id="7" label="7">
+        <attvalues>
+          <attvalue for="0" value="0.6933744455633196" />
+        </attvalues>
+      </node>
+      <node id="32" label="32">
+        <attvalues>
+          <attvalue for="0" value="1.2250359580414876" />
+        </attvalues>
+      </node>
+      <node id="8" label="8">
+        <attvalues>
+          <attvalue for="0" value="1.2318788103329092" />
+        </attvalues>
+      </node>
+      <node id="21" label="21">
+        <attvalues>
+          <attvalue for="0" value="0.5642239212081487" />
+        </attvalues>
+      </node>
+      <node id="28" label="28">
+        <attvalues>
+          <attvalue for="0" value="0.36890363495870593" />
+        </attvalues>
+      </node>
+      <node id="10" label="10">
+        <attvalues>
+          <attvalue for="0" value="1.120306523800556" />
+        </attvalues>
+      </node>
+      <node id="23" label="23">
+        <attvalues>
+          <attvalue for="0" value="0.9277937129009983" />
+        </attvalues>
+      </node>
+      <node id="27" label="27">
+        <attvalues>
+          <attvalue for="0" value="1.2340731554713327" />
+        </attvalues>
+      </node>
+      <node id="12" label="12">
+        <attvalues>
+          <attvalue for="0" value="0.17965979353296468" />
+        </attvalues>
+      </node>
+      <node id="29" label="29">
+        <attvalues>
+          <attvalue for="0" value="1.38210872402973" />
+        </attvalues>
+      </node>
+      <node id="13" label="13">
+        <attvalues>
+          <attvalue for="0" value="1.246441139551269" />
+        </attvalues>
+      </node>
+      <node id="42" label="42">
+        <attvalues>
+          <attvalue for="0" value="1.1649311636787727" />
+        </attvalues>
+      </node>
+      <node id="15" label="15">
+        <attvalues>
+          <attvalue for="0" value="1.2211458790038643" />
+        </attvalues>
+      </node>
+      <node id="43" label="43">
+        <attvalues>
+          <attvalue for="0" value="2.998931295991125" />
+        </attvalues>
+      </node>
+      <node id="26" label="26">
+        <attvalues>
+          <attvalue for="0" value="1.0560915999563694" />
+        </attvalues>
+      </node>
+      <node id="18" label="18">
+        <attvalues>
+          <attvalue for="0" value="0.8664254154431779" />
+        </attvalues>
+      </node>
+      <node id="34" label="34">
+        <attvalues>
+          <attvalue for="0" value="1.7306053187279942" />
+        </attvalues>
+      </node>
+      <node id="46" label="46">
+        <attvalues>
+          <attvalue for="0" value="0.9017181303726576" />
+        </attvalues>
+      </node>
+      <node id="22" label="22">
+        <attvalues>
+          <attvalue for="0" value="0.18363948640484937" />
+        </attvalues>
+      </node>
+      <node id="30" label="30">
+        <attvalues>
+          <attvalue for="0" value="1.5945115889268853" />
+        </attvalues>
+      </node>
+      <node id="25" label="25">
+        <attvalues>
+          <attvalue for="0" value="0.6924328627838893" />
+        </attvalues>
+      </node>
+      <node id="33" label="33">
+        <attvalues>
+          <attvalue for="0" value="1.1151666691298616" />
+        </attvalues>
+      </node>
+      <node id="39" label="39">
+        <attvalues>
+          <attvalue for="0" value="0.8446607237999625" />
+        </attvalues>
+      </node>
+      <node id="36" label="36">
+        <attvalues>
+          <attvalue for="0" value="1.0817699997802963" />
+        </attvalues>
+      </node>
+      <node id="41" label="41">
+        <attvalues>
+          <attvalue for="0" value="1.506205496392237" />
+        </attvalues>
+      </node>
+      <node id="48" label="48">
+        <attvalues>
+          <attvalue for="0" value="0.2691336447076378" />
+        </attvalues>
+      </node>
+      <node id="47" label="47">
+        <attvalues>
+          <attvalue for="0" value="0.0" />
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="0" target="2" id="0" weight="0.3200234546952954" />
+      <edge source="0" target="9" id="1" weight="0.2749103798428827" />
+      <edge source="0" target="11" id="2" weight="0.25907012054931877" />
+      <edge source="0" target="17" id="3" weight="0.7446554014662463" />
+      <edge source="0" target="38" id="4" weight="0.28231862052123746" />
+      <edge source="2" target="19" id="5" weight="0.35932484560373845" />
+      <edge source="2" target="20" id="6" weight="0.8432788930116937" />
+      <edge source="2" target="24" id="7" weight="0.8024076793632324" />
+      <edge source="9" target="17" id="8" weight="0.3814070421374598" />
+      <edge source="9" target="28" id="9" weight="0.36890363495870593" />
+      <edge source="9" target="35" id="10" weight="0.4152162050717638" />
+      <edge source="9" target="37" id="11" weight="0.6141997184074686" />
+      <edge source="9" target="40" id="12" weight="0.40328309135051166" />
+      <edge source="9" target="49" id="13" weight="0.531535238338027" />
+      <edge source="11" target="19" id="14" weight="0.7807622690499673" />
+      <edge source="11" target="27" id="15" weight="0.858450062221625" />
+      <edge source="17" target="5" id="16" weight="0.7437064615801171" />
+      <edge source="17" target="31" id="17" weight="0.5851251944611796" />
+      <edge source="38" target="5" id="18" weight="0.11818826185757328" />
+      <edge source="38" target="21" id="19" weight="0.26486529748017135" />
+      <edge source="38" target="23" id="20" weight="0.5782279173852422" />
+      <edge source="38" target="25" id="21" weight="0.6924328627838893" />
+      <edge source="38" target="30" id="22" weight="0.5031166791527476" />
+      <edge source="1" target="14" id="23" weight="0.35236243844726556" />
+      <edge source="1" target="35" id="24" weight="0.18771930428052733" />
+      <edge source="1" target="45" id="25" weight="0.6765774554881557" />
+      <edge source="14" target="3" id="26" weight="0.7050150643300457" />
+      <edge source="35" target="0" id="27" weight="0.43064109283860696" />
+      <edge source="35" target="4" id="28" weight="0.5402820526236933" />
+      <edge source="35" target="32" id="29" weight="0.5543694949315964" />
+      <edge source="45" target="5" id="30" weight="0.8868865647615862" />
+      <edge source="45" target="11" id="31" weight="0.30699069632292436" />
+      <edge source="45" target="22" id="32" weight="0.18363948640484937" />
+      <edge source="19" target="16" id="33" weight="0.39642396698754834" />
+      <edge source="19" target="34" id="34" weight="0.7294356723636934" />
+      <edge source="19" target="46" id="35" weight="0.7867249011041411" />
+      <edge source="20" target="2" id="36" weight="0.11188826178456708" />
+      <edge source="20" target="7" id="37" weight="0.6933744455633196" />
+      <edge source="20" target="16" id="38" weight="0.7265815967843037" />
+      <edge source="24" target="1" id="39" weight="0.5058695082318225" />
+      <edge source="24" target="4" id="40" weight="0.7653573053304972" />
+      <edge source="3" target="40" id="41" weight="0.8994259747301813" />
+      <edge source="3" target="49" id="42" weight="0.4031784951815329" />
+      <edge source="40" target="43" id="43" weight="0.12705900573175244" />
+      <edge source="49" target="12" id="44" weight="0.17965979353296468" />
+      <edge source="49" target="18" id="45" weight="0.8664254154431779" />
+      <edge source="49" target="37" id="46" weight="0.4814453666087313" />
+      <edge source="49" target="41" id="47" weight="0.656477685830439" />
+      <edge source="4" target="16" id="48" weight="0.567342075567177" />
+      <edge source="16" target="1" id="49" weight="0.5018329201063727" />
+      <edge source="16" target="26" id="50" weight="0.15473659774524118" />
+      <edge source="16" target="38" id="51" weight="0.7369147721297694" />
+      <edge source="5" target="11" id="52" weight="0.7536833080923694" />
+      <edge source="5" target="31" id="53" weight="0.7168953784157017" />
+      <edge source="5" target="37" id="54" weight="0.16019508805901364" />
+      <edge source="31" target="10" id="55" weight="0.1363694426330736" />
+      <edge source="31" target="26" id="56" weight="0.4516843999363288" />
+      <edge source="37" target="20" id="57" weight="0.46990264459113895" />
+      <edge source="37" target="27" id="58" weight="0.37562309324970766" />
+      <edge source="37" target="33" id="59" weight="0.4270935486553986" />
+      <edge source="6" target="14" id="60" weight="0.6892515774040657" />
+      <edge source="6" target="31" id="61" weight="0.254503830662167" />
+      <edge source="7" target="6" id="62" weight="0.8404601323992662" />
+      <edge source="7" target="32" id="63" weight="0.32953097349514177" />
+      <edge source="32" target="8" id="64" weight="0.8561862432553898" />
+      <edge source="32" target="13" id="65" weight="0.49591536282014104" />
+      <edge source="32" target="45" id="66" weight="0.20962909885401634" />
+      <edge source="8" target="2" id="67" weight="0.29587403526268014" />
+      <edge source="8" target="14" id="68" weight="0.7007715812947783" />
+      <edge source="8" target="21" id="69" weight="0.29935862372797734" />
+      <edge source="21" target="43" id="70" weight="0.8432674327959492" />
+      <edge source="28" target="5" id="71" weight="0.2595758669721507" />
+      <edge source="28" target="6" id="72" weight="0.8466967839603179" />
+      <edge source="28" target="43" id="73" weight="0.7960297400451137" />
+      <edge source="10" target="8" id="74" weight="0.22190587662783232" />
+      <edge source="10" target="23" id="75" weight="0.3495657955157562" />
+      <edge source="23" target="4" id="76" weight="0.35981454355641107" />
+      <edge source="27" target="0" id="77" weight="0.16338061701657702" />
+      <edge source="27" target="9" id="78" weight="0.4358604350027545" />
+      <edge source="27" target="15" id="79" weight="0.5123005841675249" />
+      <edge source="27" target="36" id="80" weight="0.7308160130236122" />
+      <edge source="27" target="43" id="81" weight="0.5368109961661532" />
+      <edge source="12" target="16" id="82" weight="0.5273080714141306" />
+      <edge source="12" target="29" id="83" weight="0.8528508774144826" />
+      <edge source="12" target="35" id="84" weight="0.21935806757892415" />
+      <edge source="29" target="8" id="85" weight="0.15378669044968707" />
+      <edge source="13" target="10" id="86" weight="0.4604029636941619" />
+      <edge source="13" target="42" id="87" weight="0.4456229313286181" />
+      <edge source="42" target="2" id="88" weight="0.15947844794052088" />
+      <edge source="42" target="6" id="89" weight="0.8430130890037274" />
+      <edge source="42" target="26" id="90" weight="0.4496706022747994" />
+      <edge source="42" target="33" id="91" weight="0.3186616229030379" />
+      <edge source="15" target="43" id="92" weight="0.6957641212521567" />
+      <edge source="43" target="3" id="93" weight="0.34661396410903844" />
+      <edge source="43" target="11" id="94" weight="0.3831314298762071" />
+      <edge source="26" target="34" id="95" weight="0.1426055097368596" />
+      <edge source="26" target="39" id="96" weight="0.8446607237999625" />
+      <edge source="18" target="29" id="97" weight="0.5292578466152473" />
+      <edge source="18" target="38" id="98" weight="0.8073878761718818" />
+      <edge source="46" target="5" id="99" weight="0.5912855498975359" />
+      <edge source="22" target="0" id="100" weight="0.7958901652291506" />
+      <edge source="22" target="5" id="101" weight="0.6968894096045654" />
+      <edge source="22" target="14" id="102" weight="0.2259279176857225" />
+      <edge source="22" target="30" id="103" weight="0.41621071687010314" />
+      <edge source="22" target="32" id="104" weight="0.34113548961474943" />
+      <edge source="22" target="37" id="105" weight="0.6976112987438142" />
+      <edge source="22" target="46" id="106" weight="0.11499322926851657" />
+      <edge source="30" target="9" id="107" weight="0.5432171498076761" />
+      <edge source="30" target="35" id="108" weight="0.19932889651120977" />
+      <edge source="25" target="33" id="109" weight="0.3694114975714252" />
+      <edge source="33" target="20" id="110" weight="0.4796721712680484" />
+      <edge source="33" target="34" id="111" weight="0.8585641366274411" />
+      <edge source="33" target="36" id="112" weight="0.3509539867566842" />
+      <edge source="39" target="41" id="113" weight="0.8497278105617981" />
+      <edge source="36" target="20" id="114" weight="0.622946693656159" />
+      <edge source="41" target="2" id="115" weight="0.5045863357544521" />
+      <edge source="41" target="9" id="116" weight="0.5413148487290055" />
+      <edge source="41" target="10" id="117" weight="0.5235341174733205" />
+      <edge source="41" target="13" id="118" weight="0.7505257767311279" />
+      <edge source="41" target="38" id="119" weight="0.1075601381233045" />
+      <edge source="41" target="48" id="120" weight="0.2691336447076378" />
+      <edge source="48" target="5" id="121" weight="0.3806523831622648" />
+      <edge source="48" target="42" id="122" weight="0.7193082323501546" />
+      <edge source="47" target="4" id="123" weight="0.38723133773709506" />
+      <edge source="47" target="5" id="124" weight="0.20922777172999674" />
+      <edge source="47" target="15" id="125" weight="0.7088452948363394" />
+      <edge source="47" target="30" id="126" weight="0.6751841929040346" />
+    </edges>
+  </graph>
+</gexf>
