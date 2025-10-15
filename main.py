@@ -20,6 +20,7 @@ from simulation.discrete_event import run_discrete_event
 from visualization.plots import draw_graph, plot_influence, plot_sim_convergence_series
 from visualization.interactive import plotly_interactive_graph
 from visualization.gephi import export_gexf
+from network.fakenewsnet_loader import load_fakenewsnet_edges, FakeNewsNetLoadConfig
 
 
 def parse_args() -> argparse.Namespace:
@@ -28,6 +29,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--budget", type=int, default=None, help="Verification budget override")
     parser.add_argument("--mc-runs", type=int, default=None, help="Monte Carlo runs override")
     parser.add_argument("--seed", type=int, default=None, help="Random seed override")
+    parser.add_argument("--fakenewsnet-root", type=str, default=None, help="Path to FakeNewsNet root to build graph from")
+    parser.add_argument("--fakenewsnet-alpha", type=float, default=0.05, help="Edge weight mapping alpha")
+    parser.add_argument("--fakenewsnet-news-limit", type=int, default=None, help="Limit number of news items")
+    parser.add_argument("--fakenewsnet-tweets-limit", type=int, default=None, help="Limit tweets per news item")
     return parser.parse_args()
 
 
@@ -46,7 +51,21 @@ def main() -> None:
 
     # Load or synthesize network
     edges_path = cfg.paths.data_dir / cfg.io.edges_csv_filename
-    if args.use_synthetic or not edges_path.exists():
+    if args.fakenewsnet_root:
+        log.info("Loading edges from FakeNewsNet at %s", args.fakenewsnet_root)
+        fnn_cfg = FakeNewsNetLoadConfig(
+            root=Path(args.fakenewsnet_root),
+            alpha=float(args.fakenewsnet_alpha),
+            news_limit=args.fakenewsnet_news_limit,
+            tweets_limit_per_news=args.fakenewsnet_tweets_limit,
+        )
+        elist = load_fakenewsnet_edges(fnn_cfg)
+        # Save a cached CSV for reproducibility
+        try:
+            elist.to_csv(edges_path)
+        except Exception:
+            pass
+    elif args.use_synthetic or not edges_path.exists():
         log.info("Generating synthetic ER edge list")
         elist = EdgeList.synthetic_er(
             num_nodes=cfg.experiment.synthetic_num_nodes,
