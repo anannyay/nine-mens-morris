@@ -1,2 +1,7 @@
-pygame==2.6.1
-numpy==2.1.2
+numpy
+scipy
+networkx
+pulp
+simpy
+matplotlib
+plotly
