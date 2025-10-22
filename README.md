@@ -39,4 +39,4 @@ Example:
 
 ```sh
 python main.py --ai --ai-color white --difficulty hard
-```
+``
