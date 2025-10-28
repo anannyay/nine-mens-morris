@@ -16,38 +16,50 @@ from .puzzles import load_puzzle, SAMPLE_PUZZLES
 
 @dataclass
 class UIConfig:
-	width: int = 1200
-	height: int = 800
+	width: int = 1400
+	height: int = 900
 	margin: int = 60
-	bg_color: Tuple[int, int, int] = (15, 15, 25)
-	board_color: Tuple[int, int, int] = (180, 180, 190)
-	white_color: Tuple[int, int, int] = (255, 255, 255)  # Pure white for better contrast
-	black_color: Tuple[int, int, int] = (20, 20, 20)     # Pure black for better contrast
-	highlight_color: Tuple[int, int, int] = (100, 200, 255)
-	accent_color: Tuple[int, int, int] = (80, 150, 220)
+	# Modern gradient-based color scheme inspired by the Next.js design
+	bg_color: Tuple[int, int, int] = (2, 6, 23)  # slate-950 equivalent
+	bg_gradient_1: Tuple[int, int, int] = (88, 28, 135)  # purple-950
+	bg_gradient_2: Tuple[int, int, int] = (30, 58, 138)  # blue-950
+	board_color: Tuple[int, int, int] = (148, 163, 184)  # slate-400
+	white_color: Tuple[int, int, int] = (255, 255, 255)  # Pure white
+	black_color: Tuple[int, int, int] = (15, 23, 42)     # slate-900
+	highlight_color: Tuple[int, int, int] = (168, 85, 247)  # purple-500
+	accent_color: Tuple[int, int, int] = (236, 72, 153)  # pink-500
+	secondary_accent: Tuple[int, int, int] = (59, 130, 246)  # blue-500
 	ghost_color: Tuple[int, int, int] = (100, 100, 120)
-	text_color: Tuple[int, int, int] = (230, 230, 240)
-	card_bg: Tuple[int, int, int] = (28, 28, 38)
-	card_border: Tuple[int, int, int] = (60, 60, 80)
-	point_radius: int = 16
-	selected_radius: int = 22
-	anim_speed_px_per_s: float = 800.0
-	board_offset_x: int = 80  # Offset to center board with sidebar
-	light_mode: bool = False  # Theme toggle
+	text_color: Tuple[int, int, int] = (226, 232, 240)  # slate-200
+	text_muted: Tuple[int, int, int] = (148, 163, 184)  # slate-400
+	card_bg: Tuple[int, int, int] = (15, 23, 42)  # slate-900 with transparency
+	card_border: Tuple[int, int, int] = (71, 85, 105)  # slate-600
+	point_radius: int = 18
+	selected_radius: int = 26
+	anim_speed_px_per_s: float = 1000.0
+	board_offset_x: int = 100
+	light_mode: bool = False
+	# Animation properties
+	pulse_speed: float = 2.0
+	sparkle_colors: List[Tuple[int, int, int]] = None
 
 
 @dataclass
 class LightTheme:
-	bg_color: Tuple[int, int, int] = (248, 248, 252)
-	board_color: Tuple[int, int, int] = (60, 60, 70)
-	white_color: Tuple[int, int, int] = (255, 255, 255)  # Pure white for better contrast
-	black_color: Tuple[int, int, int] = (20, 20, 20)    # Pure black for better contrast
-	highlight_color: Tuple[int, int, int] = (0, 100, 200)
-	accent_color: Tuple[int, int, int] = (0, 80, 160)
+	bg_color: Tuple[int, int, int] = (248, 250, 252)  # slate-50
+	bg_gradient_1: Tuple[int, int, int] = (196, 181, 253)  # purple-300
+	bg_gradient_2: Tuple[int, int, int] = (147, 197, 253)  # blue-300
+	board_color: Tuple[int, int, int] = (71, 85, 105)  # slate-600
+	white_color: Tuple[int, int, int] = (255, 255, 255)
+	black_color: Tuple[int, int, int] = (15, 23, 42)    # slate-900
+	highlight_color: Tuple[int, int, int] = (124, 58, 237)  # purple-600
+	accent_color: Tuple[int, int, int] = (219, 39, 119)  # pink-600
+	secondary_accent: Tuple[int, int, int] = (37, 99, 235)  # blue-600
 	ghost_color: Tuple[int, int, int] = (120, 120, 140)
-	text_color: Tuple[int, int, int] = (30, 30, 40)
+	text_color: Tuple[int, int, int] = (15, 23, 42)  # slate-900
+	text_muted: Tuple[int, int, int] = (71, 85, 105)  # slate-600
 	card_bg: Tuple[int, int, int] = (255, 255, 255)
-	card_border: Tuple[int, int, int] = (200, 200, 210)
+	card_border: Tuple[int, int, int] = (226, 232, 240)  # slate-200
 
 
 class Screen:
@@ -58,7 +70,7 @@ class Screen:
 
 
 class Card:
-	"""Interactive card for tutorial/explanation screens"""
+	"""Interactive card for tutorial/explanation screens with modern gradient styling"""
 	def __init__(self, x: int, y: int, width: int, height: int, title: str, content: List[str], 
 	             config: UIConfig, icon: Optional[str] = None):
 		self.rect = pygame.Rect(x, y, width, height)
@@ -67,26 +79,53 @@ class Card:
 		self.config = config
 		self.icon = icon
 		self.hovered = False
+		self.animation_time = 0.0
 	
 	def contains(self, pos: Tuple[int, int]) -> bool:
 		return self.rect.collidepoint(pos)
 	
 	def draw(self, screen: pygame.Surface, font: pygame.font.Font, small_font: pygame.font.Font, theme_colors) -> None:
-		# Card background with subtle border
-		border_width = 3 if self.hovered else 1
-		pygame.draw.rect(screen, theme_colors.card_border, self.rect, border_radius=12)
-		inner_rect = self.rect.inflate(-border_width*2, -border_width*2)
-		pygame.draw.rect(screen, theme_colors.card_bg, inner_rect, border_radius=10)
+		# Update animation time
+		self.animation_time += 0.016  # Assuming 60 FPS
 		
-		# Title
+		# Modern card with gradient background and glow effect
+		if self.hovered:
+			# Glow effect when hovered
+			glow_rect = self.rect.inflate(20, 20)
+			glow_surface = pygame.Surface(glow_rect.size, pygame.SRCALPHA)
+			glow_color = (*theme_colors.highlight_color, 30)
+			pygame.draw.rect(glow_surface, glow_color, glow_surface.get_rect(), border_radius=20)
+			screen.blit(glow_surface, glow_rect.topleft)
+		
+		# Card background with gradient effect
+		card_surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+		
+		# Create gradient background
+		for i in range(self.rect.height):
+			ratio = i / self.rect.height
+			# Blend between card_bg and a slightly lighter version
+			r = int(theme_colors.card_bg[0] + (255 - theme_colors.card_bg[0]) * ratio * 0.1)
+			g = int(theme_colors.card_bg[1] + (255 - theme_colors.card_bg[1]) * ratio * 0.1)
+			b = int(theme_colors.card_bg[2] + (255 - theme_colors.card_bg[2]) * ratio * 0.1)
+			pygame.draw.line(card_surface, (r, g, b), (0, i), (self.rect.width, i))
+		
+		# Add subtle border with rounded corners
+		border_color = theme_colors.highlight_color if self.hovered else theme_colors.card_border
+		border_width = 2 if self.hovered else 1
+		pygame.draw.rect(card_surface, border_color, card_surface.get_rect(), border_width, border_radius=16)
+		
+		# Blit the card surface
+		screen.blit(card_surface, self.rect.topleft)
+		
+		# Title with gradient text effect
 		title_surf = font.render(self.title, True, theme_colors.highlight_color)
-		title_rect = title_surf.get_rect(centerx=self.rect.centerx, top=self.rect.top + 20)
+		title_rect = title_surf.get_rect(centerx=self.rect.centerx, top=self.rect.top + 25)
 		screen.blit(title_surf, title_rect)
 		
-		# Content with text wrapping
-		y_offset = title_rect.bottom + 20
-		line_height = 24
-		text_margin = 20
+		# Content with text wrapping and better spacing
+		y_offset = title_rect.bottom + 25
+		line_height = 26
+		text_margin = 25
 		max_width = self.rect.width - 2 * text_margin
 		
 		for line in self.content:
@@ -118,20 +157,53 @@ class Card:
 
 
 class Button:
-	"""Modern button with hover effects"""
+	"""Modern button with gradient effects and animations"""
 	def __init__(self, x: int, y: int, width: int, height: int, text: str, config: UIConfig):
 		self.rect = pygame.Rect(x, y, width, height)
 		self.text = text
 		self.config = config
 		self.hovered = False
 		self.clicked = False
+		self.animation_time = 0.0
 	
 	def contains(self, pos: Tuple[int, int]) -> bool:
 		return self.rect.collidepoint(pos)
 	
 	def draw(self, screen: pygame.Surface, font: pygame.font.Font, theme_colors) -> None:
-		color = theme_colors.highlight_color if self.hovered else theme_colors.accent_color
-		pygame.draw.rect(screen, color, self.rect, border_radius=8)
+		# Update animation time
+		self.animation_time += 0.016  # Assuming 60 FPS
+		
+		# Create button surface for gradient effect
+		button_surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+		
+		# Gradient background based on hover state
+		if self.hovered:
+			# Gradient from highlight to accent color
+			for i in range(self.rect.height):
+				ratio = i / self.rect.height
+				r = int(theme_colors.highlight_color[0] + (theme_colors.accent_color[0] - theme_colors.highlight_color[0]) * ratio)
+				g = int(theme_colors.highlight_color[1] + (theme_colors.accent_color[1] - theme_colors.highlight_color[1]) * ratio)
+				b = int(theme_colors.highlight_color[2] + (theme_colors.accent_color[2] - theme_colors.highlight_color[2]) * ratio)
+				pygame.draw.line(button_surface, (r, g, b), (0, i), (self.rect.width, i))
+			
+			# Add glow effect
+			glow_rect = pygame.Rect(0, 0, self.rect.width, self.rect.height)
+			glow_surface = pygame.Surface(glow_rect.size, pygame.SRCALPHA)
+			glow_color = (*theme_colors.highlight_color, 40)
+			pygame.draw.rect(glow_surface, glow_color, glow_surface.get_rect(), border_radius=12)
+			button_surface.blit(glow_surface, (0, 0), special_flags=pygame.BLEND_ALPHA_SDL2)
+		else:
+			# Solid accent color
+			pygame.draw.rect(button_surface, theme_colors.accent_color, button_surface.get_rect(), border_radius=12)
+		
+		# Add subtle border
+		border_color = theme_colors.highlight_color if self.hovered else theme_colors.card_border
+		pygame.draw.rect(button_surface, border_color, button_surface.get_rect(), 2, border_radius=12)
+		
+		# Blit button surface
+		screen.blit(button_surface, self.rect.topleft)
+		
+		# Text with better contrast
 		text_color = theme_colors.bg_color if self.hovered else theme_colors.text_color
 		text_surf = font.render(self.text, True, text_color)
 		text_rect = text_surf.get_rect(center=self.rect.center)
@@ -173,6 +245,78 @@ class EnhancedUI:
 		self._show_ai_overlay = False
 		
 		self._setup_welcome_screen()
+	
+	def _draw_gradient_background(self, theme_colors) -> None:
+		"""Draw animated gradient background similar to the Next.js design"""
+		# Create gradient surface
+		gradient_surface = pygame.Surface((self.config.width, self.config.height))
+		
+		# Animated gradient background
+		time_factor = pygame.time.get_ticks() * 0.001
+		
+		for y in range(self.config.height):
+			for x in range(self.config.width):
+				# Create multiple overlapping gradients
+				# Primary gradient (top-left to bottom-right)
+				ratio1 = (x + y) / (self.config.width + self.config.height)
+				r1 = int(theme_colors.bg_color[0] + (theme_colors.bg_gradient_1[0] - theme_colors.bg_color[0]) * ratio1)
+				g1 = int(theme_colors.bg_color[1] + (theme_colors.bg_gradient_1[1] - theme_colors.bg_color[1]) * ratio1)
+				b1 = int(theme_colors.bg_color[2] + (theme_colors.bg_gradient_1[2] - theme_colors.bg_color[2]) * ratio1)
+				
+				# Secondary gradient (bottom-left to top-right)
+				ratio2 = ((self.config.width - x) + y) / (self.config.width + self.config.height)
+				r2 = int(theme_colors.bg_color[0] + (theme_colors.bg_gradient_2[0] - theme_colors.bg_color[0]) * ratio2)
+				g2 = int(theme_colors.bg_color[1] + (theme_colors.bg_gradient_2[1] - theme_colors.bg_color[1]) * ratio2)
+				b2 = int(theme_colors.bg_color[2] + (theme_colors.bg_gradient_2[2] - theme_colors.bg_color[2]) * ratio2)
+				
+				# Blend the gradients
+				r = (r1 + r2) // 2
+				g = (g1 + g2) // 2
+				b = (b1 + b2) // 2
+				
+				gradient_surface.set_at((x, y), (r, g, b))
+		
+		self.screen.blit(gradient_surface, (0, 0))
+		
+		# Add animated floating orbs
+		self._draw_floating_orbs(theme_colors, time_factor)
+	
+	def _draw_floating_orbs(self, theme_colors, time_factor: float) -> None:
+		"""Draw animated floating orbs for visual interest"""
+		orb_positions = [
+			(self.config.width // 4, self.config.height // 4),
+			(self.config.width * 3 // 4, self.config.height // 3),
+			(self.config.width // 2, self.config.height * 2 // 3),
+			(self.config.width // 3, self.config.height * 3 // 4)
+		]
+		
+		orb_colors = [
+			theme_colors.highlight_color,
+			theme_colors.accent_color,
+			theme_colors.secondary_accent
+		]
+		
+		for i, (base_x, base_y) in enumerate(orb_positions):
+			# Animate orb position
+			offset_x = int(50 * math.sin(time_factor * 0.5 + i))
+			offset_y = int(30 * math.cos(time_factor * 0.3 + i))
+			x, y = base_x + offset_x, base_y + offset_y
+			
+			# Animate orb size
+			size = int(200 + 50 * math.sin(time_factor * 0.8 + i))
+			
+			# Create orb surface with alpha
+			orb_surface = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)
+			color = orb_colors[i % len(orb_colors)]
+			
+			# Draw orb with gradient effect
+			for radius in range(size, 0, -2):
+				alpha = int(20 * (1 - radius / size))
+				orb_color = (*color, alpha)
+				pygame.draw.circle(orb_surface, orb_color, (size, size), radius)
+			
+			# Blit orb with alpha blending
+			self.screen.blit(orb_surface, (x - size, y - size), special_flags=pygame.BLEND_ALPHA_SDL2)
 	
 	def _get_theme_colors(self):
 		"""Get current theme colors based on light_mode setting"""
@@ -435,29 +579,43 @@ class EnhancedUI:
 		self.buttons.append(Button(btn_x, btn_y, btn_width, btn_height, "Back", self.config))
 	
 	def _draw_welcome_screen(self) -> None:
-		"""Draw welcome screen"""
+		"""Draw welcome screen with modern gradient background"""
 		theme = self._get_theme_colors()
-		self.screen.fill(theme.bg_color)
 		
-		# Title
-		title = self.font_large.render("Nine Men's Morris", True, theme.highlight_color)
-		subtitle = self.font.render("Strategic Board Game with AI", True, theme.text_color)
-		title_rect = title.get_rect(center=(self.config.width // 2, 60))
-		subtitle_rect = subtitle.get_rect(center=(self.config.width // 2, 100))
-		self.screen.blit(title, title_rect)
-		self.screen.blit(subtitle, subtitle_rect)
+		# Draw animated gradient background
+		self._draw_gradient_background(theme)
 		
-		# Draw cards
+		# Title with gradient text effect
+		title_text = "Nine Men's Morris"
+		subtitle_text = "Strategic Board Game with AI"
+		
+		# Create gradient title effect
+		title_surf = self.font_large.render(title_text, True, theme.highlight_color)
+		subtitle_surf = self.font.render(subtitle_text, True, theme.text_color)
+		
+		title_rect = title_surf.get_rect(center=(self.config.width // 2, 80))
+		subtitle_rect = subtitle_surf.get_rect(center=(self.config.width // 2, 120))
+		
+		# Add glow effect to title
+		glow_surf = self.font_large.render(title_text, True, theme.accent_color)
+		for offset in [(2, 2), (-2, -2), (2, -2), (-2, 2)]:
+			glow_rect = title_rect.move(offset)
+			self.screen.blit(glow_surf, glow_rect)
+		
+		self.screen.blit(title_surf, title_rect)
+		self.screen.blit(subtitle_surf, subtitle_rect)
+		
+		# Draw cards with modern styling
 		for card in self.cards:
 			card.draw(self.screen, self.font, self.font_small, theme)
 		
-		# Draw buttons
+		# Draw buttons with modern styling
 		for button in self.buttons:
 			button.draw(self.screen, self.font, theme)
 		
 		# Footer with theme toggle info
 		footer_text = "Press ESC to return to welcome screen anytime | Press T to toggle theme"
-		footer = self.font_tiny.render(footer_text, True, theme.text_color)
+		footer = self.font_tiny.render(footer_text, True, theme.text_muted)
 		footer_rect = footer.get_rect(center=(self.config.width // 2, self.config.height - 20))
 		self.screen.blit(footer, footer_rect)
 	
@@ -689,52 +847,78 @@ class EnhancedUI:
 			self.screen.blit(ach_surf, (sidebar_x + 15, y_offset))
 	
 	def draw_board(self) -> None:
-		"""Draw game board"""
+		"""Draw game board with modern styling"""
 		theme = self._get_theme_colors()
-		self.screen.fill(theme.bg_color)
+		
+		# Draw gradient background
+		self._draw_gradient_background(theme)
 		
 		c = theme.board_color
-		# Draw lines between adjacent points
+		# Draw lines between adjacent points with better styling
 		for i in range(24):
 			for j in ADJACENT[i]:
 				if j > i:
-					pygame.draw.line(self.screen, c, self.point_pos(i), self.point_pos(j), 2)
+					# Draw thicker lines with subtle gradient
+					p1 = self.point_pos(i)
+					p2 = self.point_pos(j)
+					pygame.draw.line(self.screen, c, p1, p2, 3)
+					# Add subtle highlight
+					pygame.draw.line(self.screen, theme.highlight_color, p1, p2, 1)
 		
 		# Draw mill indicators
 		self._draw_mill_indicators()
 		
-		# Draw points and pieces
+		# Draw points and pieces with modern styling
 		for i in range(24):
 			px, py = self.point_pos(i)
-			pygame.draw.circle(self.screen, c, (px, py), self.config.point_radius, 2)
+			
+			# Draw point with gradient effect
+			point_surface = pygame.Surface((self.config.point_radius * 2, self.config.point_radius * 2), pygame.SRCALPHA)
+			for radius in range(self.config.point_radius, 0, -1):
+				alpha = int(100 * (1 - radius / self.config.point_radius))
+				point_color = (*c, alpha)
+				pygame.draw.circle(point_surface, point_color, (self.config.point_radius, self.config.point_radius), radius)
+			self.screen.blit(point_surface, (px - self.config.point_radius, py - self.config.point_radius), special_flags=pygame.BLEND_ALPHA_SDL2)
+			
+			# Draw piece
 			v = self.state.board[i]
 			if v != EMPTY:
 				color = theme.white_color if v == PLAYER_WHITE else theme.black_color
-				# Draw piece with border for better visibility
-				pygame.draw.circle(self.screen, color, (px, py), self.config.point_radius - 3)
+				# Draw piece with modern styling and border
+				pygame.draw.circle(self.screen, color, (px, py), self.config.point_radius - 4)
 				# Add contrasting border
 				border_color = theme.black_color if v == PLAYER_WHITE else theme.white_color
-				pygame.draw.circle(self.screen, border_color, (px, py), self.config.point_radius - 3, 2)
-			# highlight legal target
+				pygame.draw.circle(self.screen, border_color, (px, py), self.config.point_radius - 4, 3)
+				# Add subtle inner highlight
+				inner_color = theme.highlight_color if v == PLAYER_WHITE else theme.accent_color
+				pygame.draw.circle(self.screen, inner_color, (px, py), self.config.point_radius - 6, 1)
+			
+			# Highlight legal targets with pulsing effect
 			if i in self._legal_targets:
-				pygame.draw.circle(self.screen, theme.highlight_color, (px, py), self.config.point_radius + 2, 2)
+				pulse_factor = 1 + 0.3 * math.sin(pygame.time.get_ticks() * 0.01)
+				radius = int((self.config.point_radius + 4) * pulse_factor)
+				pygame.draw.circle(self.screen, theme.highlight_color, (px, py), radius, 3)
 		
-		# Draw selection highlight
+		# Draw selection highlight with animation
 		if self._selected is not None:
 			px, py = self.point_pos(self._selected)
-			pygame.draw.circle(self.screen, theme.highlight_color, (px, py), self.config.selected_radius, 3)
+			pulse_factor = 1 + 0.2 * math.sin(pygame.time.get_ticks() * 0.008)
+			radius = int(self.config.selected_radius * pulse_factor)
+			pygame.draw.circle(self.screen, theme.highlight_color, (px, py), radius, 4)
 		
-		# Draw hint arrow
+		# Draw hint arrow with modern styling
 		if self._hint_move and self._hint_move.to_idx is not None:
 			fx = self._hint_move.from_idx if self._hint_move.from_idx is not None else self._hint_move.to_idx
 			if fx is not None:
 				p1 = self.point_pos(fx)
 				p2 = self.point_pos(self._hint_move.to_idx)
-				pygame.draw.line(self.screen, self.config.highlight_color, p1, p2, 4)
+				# Draw arrow with gradient effect
+				pygame.draw.line(self.screen, theme.highlight_color, p1, p2, 6)
+				pygame.draw.line(self.screen, theme.accent_color, p1, p2, 3)
 				# Draw arrow head
 				angle = math.atan2(p2[1] - p1[1], p2[0] - p1[0])
-				arrow_size = 15
-				pygame.draw.polygon(self.screen, self.config.highlight_color, [
+				arrow_size = 20
+				pygame.draw.polygon(self.screen, theme.highlight_color, [
 					p2,
 					(p2[0] - arrow_size * math.cos(angle - math.pi/6), p2[1] - arrow_size * math.sin(angle - math.pi/6)),
 					(p2[0] - arrow_size * math.cos(angle + math.pi/6), p2[1] - arrow_size * math.sin(angle + math.pi/6))
@@ -743,41 +927,63 @@ class EnhancedUI:
 		# Draw sidebar
 		self._draw_sidebar()
 		
-		# Winner banner with better design and more prominent display
+		# Winner banner with modern design
 		if self.state.winner is not None:
-			theme = self._get_theme_colors()
-			winner = "White" if self.state.winner == PLAYER_WHITE else "Black"
-			winner_emoji = "⚪" if self.state.winner == PLAYER_WHITE else "⚫"
-			msg = f"{winner_emoji} {winner} Wins! {winner_emoji}"
-			
-			# Make the banner much more prominent
-			banner = self.font_large.render(msg, True, theme.highlight_color)
-			banner_rect = banner.get_rect(center=(self.config.width // 2 - 125, 50))
-			bg_rect = banner_rect.inflate(80, 40)
-			
-			# Draw multiple layers for better visibility
-			pygame.draw.rect(self.screen, (0, 0, 0), bg_rect, border_radius=20)  # Black background
-			pygame.draw.rect(self.screen, theme.card_bg, bg_rect, border_radius=20)
-			pygame.draw.rect(self.screen, theme.highlight_color, bg_rect, 6, border_radius=20)
-			
-			# Add pulsing effect
-			celebration_rect = bg_rect.inflate(30, 20)
-			pygame.draw.rect(self.screen, theme.accent_color, celebration_rect, 3, border_radius=25)
-			
-			self.screen.blit(banner, banner_rect)
-			
-			# Add win reason
-			win_reason = self._get_win_reason()
-			reason_text = f"Reason: {win_reason}"
-			reason_surf = self.font.render(reason_text, True, theme.text_color)
-			reason_rect = reason_surf.get_rect(center=(self.config.width // 2 - 125, 90))
-			self.screen.blit(reason_surf, reason_rect)
-			
-			# Add restart hint
-			restart_text = "Press N for new game or ESC for menu"
-			restart_surf = self.font_small.render(restart_text, True, theme.text_color)
-			restart_rect = restart_surf.get_rect(center=(self.config.width // 2 - 125, 120))
-			self.screen.blit(restart_surf, restart_rect)
+			self._draw_winner_banner(theme)
+	
+	def _draw_winner_banner(self, theme_colors) -> None:
+		"""Draw modern winner banner with animations"""
+		winner = "White" if self.state.winner == PLAYER_WHITE else "Black"
+		winner_emoji = "⚪" if self.state.winner == PLAYER_WHITE else "⚫"
+		msg = f"{winner_emoji} {winner} Wins! {winner_emoji}"
+		
+		# Create gradient banner effect
+		banner = self.font_large.render(msg, True, theme_colors.highlight_color)
+		banner_rect = banner.get_rect(center=(self.config.width // 2 - 150, 60))
+		bg_rect = banner_rect.inflate(100, 50)
+		
+		# Animated pulsing effect
+		pulse_factor = 1 + 0.1 * math.sin(pygame.time.get_ticks() * 0.005)
+		bg_rect = bg_rect.inflate(int(20 * pulse_factor), int(10 * pulse_factor))
+		
+		# Create banner surface with gradient
+		banner_surface = pygame.Surface(bg_rect.size, pygame.SRCALPHA)
+		
+		# Gradient background
+		for i in range(bg_rect.height):
+			ratio = i / bg_rect.height
+			r = int(theme_colors.card_bg[0] + (theme_colors.highlight_color[0] - theme_colors.card_bg[0]) * ratio * 0.3)
+			g = int(theme_colors.card_bg[1] + (theme_colors.highlight_color[1] - theme_colors.card_bg[1]) * ratio * 0.3)
+			b = int(theme_colors.card_bg[2] + (theme_colors.highlight_color[2] - theme_colors.card_bg[2]) * ratio * 0.3)
+			pygame.draw.line(banner_surface, (r, g, b), (0, i), (bg_rect.width, i))
+		
+		# Add border with glow effect
+		pygame.draw.rect(banner_surface, theme_colors.highlight_color, banner_surface.get_rect(), 4, border_radius=25)
+		pygame.draw.rect(banner_surface, theme_colors.accent_color, banner_surface.get_rect(), 2, border_radius=25)
+		
+		# Blit banner surface
+		self.screen.blit(banner_surface, bg_rect.topleft)
+		
+		# Add glow effect around banner
+		glow_surface = pygame.Surface(bg_rect.inflate(40, 20).size, pygame.SRCALPHA)
+		glow_color = (*theme_colors.highlight_color, 30)
+		pygame.draw.rect(glow_surface, glow_color, glow_surface.get_rect(), border_radius=35)
+		self.screen.blit(glow_surface, bg_rect.inflate(40, 20).topleft, special_flags=pygame.BLEND_ALPHA_SDL2)
+		
+		self.screen.blit(banner, banner_rect)
+		
+		# Add win reason
+		win_reason = self._get_win_reason()
+		reason_text = f"Reason: {win_reason}"
+		reason_surf = self.font.render(reason_text, True, theme_colors.text_color)
+		reason_rect = reason_surf.get_rect(center=(self.config.width // 2 - 150, 100))
+		self.screen.blit(reason_surf, reason_rect)
+		
+		# Add restart hint
+		restart_text = "Press N for new game or ESC for menu"
+		restart_surf = self.font_small.render(restart_text, True, theme_colors.text_muted)
+		restart_rect = restart_surf.get_rect(center=(self.config.width // 2 - 150, 130))
+		self.screen.blit(restart_surf, restart_rect)
 	
 	def animate_move(self, from_idx: int, to_idx: int) -> None:
 		p1 = self.point_pos(from_idx)
