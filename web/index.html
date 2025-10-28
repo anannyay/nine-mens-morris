@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nine Men's Morris</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <h1>Nine Men's Morris</h1>
+      <div class="controls">
+        <div class="control-group">
+          <label>Mode</label>
+          <select id="modeSelect">
+            <option value="2p">Two Players</option>
+            <option value="ai">Vs AI</option>
+          </select>
+        </div>
+        <div class="control-group" id="sideGroup">
+          <label>Play as</label>
+          <select id="sideSelect">
+            <option value="white">White</option>
+            <option value="black">Black</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Difficulty</label>
+          <select id="difficultySelect">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <div class="control-group control-group--buttons">
+          <button id="newGameBtn">New Game</button>
+          <button id="undoBtn">Undo</button>
+          <button id="redoBtn">Redo</button>
+          <button id="hintBtn">Hint</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app__main">
+      <div class="status" id="statusBar">Loading…</div>
+      <div id="board" class="board"></div>
+    </main>
+  </div>
+
+  <div id="confettiContainer" class="confetti-container" aria-hidden="true"></div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
