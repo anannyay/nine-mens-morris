@@ -19,16 +19,16 @@ class UIConfig:
 	width: int = 1400
 	height: int = 900
 	margin: int = 60
-	# Modern gradient-based color scheme inspired by the Next.js design
+	# Modern gradient-based color scheme with green and blue
 	bg_color: Tuple[int, int, int] = (2, 6, 23)  # slate-950 equivalent
-	bg_gradient_1: Tuple[int, int, int] = (88, 28, 135)  # purple-950
+	bg_gradient_1: Tuple[int, int, int] = (20, 83, 45)  # green-950
 	bg_gradient_2: Tuple[int, int, int] = (30, 58, 138)  # blue-950
 	board_color: Tuple[int, int, int] = (148, 163, 184)  # slate-400
 	white_color: Tuple[int, int, int] = (255, 255, 255)  # Pure white
 	black_color: Tuple[int, int, int] = (15, 23, 42)     # slate-900
-	highlight_color: Tuple[int, int, int] = (168, 85, 247)  # purple-500
-	accent_color: Tuple[int, int, int] = (236, 72, 153)  # pink-500
-	secondary_accent: Tuple[int, int, int] = (59, 130, 246)  # blue-500
+	highlight_color: Tuple[int, int, int] = (34, 197, 94)  # green-500
+	accent_color: Tuple[int, int, int] = (59, 130, 246)  # blue-500
+	secondary_accent: Tuple[int, int, int] = (16, 185, 129)  # emerald-500
 	ghost_color: Tuple[int, int, int] = (100, 100, 120)
 	text_color: Tuple[int, int, int] = (226, 232, 240)  # slate-200
 	text_muted: Tuple[int, int, int] = (148, 163, 184)  # slate-400
@@ -47,14 +47,14 @@ class UIConfig:
 @dataclass
 class LightTheme:
 	bg_color: Tuple[int, int, int] = (248, 250, 252)  # slate-50
-	bg_gradient_1: Tuple[int, int, int] = (196, 181, 253)  # purple-300
+	bg_gradient_1: Tuple[int, int, int] = (134, 239, 172)  # green-300
 	bg_gradient_2: Tuple[int, int, int] = (147, 197, 253)  # blue-300
 	board_color: Tuple[int, int, int] = (71, 85, 105)  # slate-600
 	white_color: Tuple[int, int, int] = (255, 255, 255)
 	black_color: Tuple[int, int, int] = (15, 23, 42)    # slate-900
-	highlight_color: Tuple[int, int, int] = (124, 58, 237)  # purple-600
-	accent_color: Tuple[int, int, int] = (219, 39, 119)  # pink-600
-	secondary_accent: Tuple[int, int, int] = (37, 99, 235)  # blue-600
+	highlight_color: Tuple[int, int, int] = (22, 163, 74)  # green-600
+	accent_color: Tuple[int, int, int] = (37, 99, 235)  # blue-600
+	secondary_accent: Tuple[int, int, int] = (5, 150, 105)  # emerald-600
 	ghost_color: Tuple[int, int, int] = (120, 120, 140)
 	text_color: Tuple[int, int, int] = (15, 23, 42)  # slate-900
 	text_muted: Tuple[int, int, int] = (71, 85, 105)  # slate-600
@@ -244,79 +244,63 @@ class EnhancedUI:
 		# Overlays
 		self._show_ai_overlay = False
 		
+		# Load background image (try multiple formats)
+		self._background_image = None
+		image_paths = ["Aurora_Mac.png", "Aurora_Mac.jpg", "Aurora_Mac.jpeg", "background.png"]
+		
+		for path in image_paths:
+			try:
+				self._background_image = pygame.image.load(path)
+				# Scale to fit screen
+				self._background_image = pygame.transform.scale(self._background_image, (self.config.width, self.config.height))
+				print(f"Successfully loaded background image: {path}")
+				break
+			except pygame.error:
+				continue
+		
+		if self._background_image is None:
+			print("No background image found, using gradient background")
+		
 		self._setup_welcome_screen()
 	
 	def _draw_gradient_background(self, theme_colors) -> None:
-		"""Draw animated gradient background similar to the Next.js design"""
-		# Create gradient surface
-		gradient_surface = pygame.Surface((self.config.width, self.config.height))
+		"""Draw Aurora-inspired gradient background"""
+		# Create Aurora-like gradient background
+		self.screen.fill(theme_colors.bg_color)
 		
-		# Animated gradient background
-		time_factor = pygame.time.get_ticks() * 0.001
+		# Aurora-inspired colors (greens, blues, purples)
+		aurora_colors = [
+			(0, 20, 40),      # Deep blue
+			(0, 40, 80),       # Dark blue
+			(20, 60, 100),     # Blue-green
+			(40, 80, 120),     # Teal
+			(60, 100, 140),    # Light teal
+			(80, 120, 160),    # Cyan-blue
+			(100, 140, 180),   # Light cyan
+			(120, 160, 200),   # Pale blue
+			(140, 180, 220),   # Very light blue
+			(160, 200, 240),   # Almost white-blue
+		]
 		
-		for y in range(self.config.height):
-			for x in range(self.config.width):
-				# Create multiple overlapping gradients
-				# Primary gradient (top-left to bottom-right)
-				ratio1 = (x + y) / (self.config.width + self.config.height)
-				r1 = int(theme_colors.bg_color[0] + (theme_colors.bg_gradient_1[0] - theme_colors.bg_color[0]) * ratio1)
-				g1 = int(theme_colors.bg_color[1] + (theme_colors.bg_gradient_1[1] - theme_colors.bg_color[1]) * ratio1)
-				b1 = int(theme_colors.bg_color[2] + (theme_colors.bg_gradient_1[2] - theme_colors.bg_color[2]) * ratio1)
-				
-				# Secondary gradient (bottom-left to top-right)
-				ratio2 = ((self.config.width - x) + y) / (self.config.width + self.config.height)
-				r2 = int(theme_colors.bg_color[0] + (theme_colors.bg_gradient_2[0] - theme_colors.bg_color[0]) * ratio2)
-				g2 = int(theme_colors.bg_color[1] + (theme_colors.bg_gradient_2[1] - theme_colors.bg_color[1]) * ratio2)
-				b2 = int(theme_colors.bg_color[2] + (theme_colors.bg_gradient_2[2] - theme_colors.bg_color[2]) * ratio2)
-				
-				# Blend the gradients
-				r = (r1 + r2) // 2
-				g = (g1 + g2) // 2
-				b = (b1 + b2) // 2
-				
-				gradient_surface.set_at((x, y), (r, g, b))
+		# Create vertical gradient
+		gradient_steps = len(aurora_colors)
+		step_height = self.config.height // gradient_steps
 		
-		self.screen.blit(gradient_surface, (0, 0))
+		for i in range(gradient_steps):
+			color = aurora_colors[i]
+			rect = pygame.Rect(0, i * step_height, self.config.width, step_height)
+			pygame.draw.rect(self.screen, color, rect)
 		
-		# Add animated floating orbs
-		self._draw_floating_orbs(theme_colors, time_factor)
+		# Add horizontal gradient overlay for Aurora effect
+		for x in range(0, self.config.width, 4):
+			for y in range(0, self.config.height, 4):
+				# Create wavy Aurora effect
+				wave_factor = 0.3 * math.sin(x * 0.01) * math.cos(y * 0.008)
+				intensity = int(20 * wave_factor)
+				if intensity > 0:
+					aurora_color = (intensity, intensity * 2, intensity * 3)
+					pygame.draw.rect(self.screen, aurora_color, (x, y, 4, 4))
 	
-	def _draw_floating_orbs(self, theme_colors, time_factor: float) -> None:
-		"""Draw animated floating orbs for visual interest"""
-		orb_positions = [
-			(self.config.width // 4, self.config.height // 4),
-			(self.config.width * 3 // 4, self.config.height // 3),
-			(self.config.width // 2, self.config.height * 2 // 3),
-			(self.config.width // 3, self.config.height * 3 // 4)
-		]
-		
-		orb_colors = [
-			theme_colors.highlight_color,
-			theme_colors.accent_color,
-			theme_colors.secondary_accent
-		]
-		
-		for i, (base_x, base_y) in enumerate(orb_positions):
-			# Animate orb position
-			offset_x = int(50 * math.sin(time_factor * 0.5 + i))
-			offset_y = int(30 * math.cos(time_factor * 0.3 + i))
-			x, y = base_x + offset_x, base_y + offset_y
-			
-			# Animate orb size
-			size = int(200 + 50 * math.sin(time_factor * 0.8 + i))
-			
-			# Create orb surface with alpha
-			orb_surface = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)
-			color = orb_colors[i % len(orb_colors)]
-			
-			# Draw orb with gradient effect
-			for radius in range(size, 0, -2):
-				alpha = int(20 * (1 - radius / size))
-				orb_color = (*color, alpha)
-				pygame.draw.circle(orb_surface, orb_color, (size, size), radius)
-			
-			# Blit orb with alpha blending
-			self.screen.blit(orb_surface, (x - size, y - size), special_flags=pygame.BLEND_ALPHA_SDL2)
 	
 	def _get_theme_colors(self):
 		"""Get current theme colors based on light_mode setting"""
@@ -579,11 +563,19 @@ class EnhancedUI:
 		self.buttons.append(Button(btn_x, btn_y, btn_width, btn_height, "Back", self.config))
 	
 	def _draw_welcome_screen(self) -> None:
-		"""Draw welcome screen with modern gradient background"""
+		"""Draw welcome screen with Aurora Mac background"""
 		theme = self._get_theme_colors()
 		
-		# Draw animated gradient background
-		self._draw_gradient_background(theme)
+		# Draw background image if available
+		if self._background_image:
+			self.screen.blit(self._background_image, (0, 0))
+			# Add a semi-transparent overlay for better text readability
+			overlay = pygame.Surface((self.config.width, self.config.height), pygame.SRCALPHA)
+			pygame.draw.rect(overlay, (*theme.bg_color, 120), overlay.get_rect())
+			self.screen.blit(overlay, (0, 0))
+		else:
+			# Fallback to gradient background
+			self._draw_gradient_background(theme)
 		
 		# Title with gradient text effect
 		title_text = "Nine Men's Morris"
@@ -847,77 +839,60 @@ class EnhancedUI:
 			self.screen.blit(ach_surf, (sidebar_x + 15, y_offset))
 	
 	def draw_board(self) -> None:
-		"""Draw game board with modern styling"""
+		"""Draw game board with optimized styling"""
 		theme = self._get_theme_colors()
 		
 		# Draw gradient background
 		self._draw_gradient_background(theme)
 		
 		c = theme.board_color
-		# Draw lines between adjacent points with better styling
+		# Draw lines between adjacent points
 		for i in range(24):
 			for j in ADJACENT[i]:
 				if j > i:
-					# Draw thicker lines with subtle gradient
 					p1 = self.point_pos(i)
 					p2 = self.point_pos(j)
 					pygame.draw.line(self.screen, c, p1, p2, 3)
-					# Add subtle highlight
-					pygame.draw.line(self.screen, theme.highlight_color, p1, p2, 1)
 		
 		# Draw mill indicators
 		self._draw_mill_indicators()
 		
-		# Draw points and pieces with modern styling
+		# Draw points and pieces
 		for i in range(24):
 			px, py = self.point_pos(i)
 			
-			# Draw point with gradient effect
-			point_surface = pygame.Surface((self.config.point_radius * 2, self.config.point_radius * 2), pygame.SRCALPHA)
-			for radius in range(self.config.point_radius, 0, -1):
-				alpha = int(100 * (1 - radius / self.config.point_radius))
-				point_color = (*c, alpha)
-				pygame.draw.circle(point_surface, point_color, (self.config.point_radius, self.config.point_radius), radius)
-			self.screen.blit(point_surface, (px - self.config.point_radius, py - self.config.point_radius), special_flags=pygame.BLEND_ALPHA_SDL2)
+			# Draw simple point
+			pygame.draw.circle(self.screen, c, (px, py), self.config.point_radius, 2)
 			
 			# Draw piece
 			v = self.state.board[i]
 			if v != EMPTY:
 				color = theme.white_color if v == PLAYER_WHITE else theme.black_color
-				# Draw piece with modern styling and border
 				pygame.draw.circle(self.screen, color, (px, py), self.config.point_radius - 4)
 				# Add contrasting border
 				border_color = theme.black_color if v == PLAYER_WHITE else theme.white_color
-				pygame.draw.circle(self.screen, border_color, (px, py), self.config.point_radius - 4, 3)
-				# Add subtle inner highlight
-				inner_color = theme.highlight_color if v == PLAYER_WHITE else theme.accent_color
-				pygame.draw.circle(self.screen, inner_color, (px, py), self.config.point_radius - 6, 1)
+				pygame.draw.circle(self.screen, border_color, (px, py), self.config.point_radius - 4, 2)
 			
-			# Highlight legal targets with pulsing effect
+			# Highlight legal targets - SIMPLE AND CLEAR
 			if i in self._legal_targets:
-				pulse_factor = 1 + 0.3 * math.sin(pygame.time.get_ticks() * 0.01)
-				radius = int((self.config.point_radius + 4) * pulse_factor)
-				pygame.draw.circle(self.screen, theme.highlight_color, (px, py), radius, 3)
+				pygame.draw.circle(self.screen, theme.highlight_color, (px, py), self.config.point_radius + 6, 4)
+				pygame.draw.circle(self.screen, theme.accent_color, (px, py), self.config.point_radius + 3, 2)
 		
-		# Draw selection highlight with animation
+		# Draw selection highlight - SIMPLE
 		if self._selected is not None:
 			px, py = self.point_pos(self._selected)
-			pulse_factor = 1 + 0.2 * math.sin(pygame.time.get_ticks() * 0.008)
-			radius = int(self.config.selected_radius * pulse_factor)
-			pygame.draw.circle(self.screen, theme.highlight_color, (px, py), radius, 4)
+			pygame.draw.circle(self.screen, theme.highlight_color, (px, py), self.config.selected_radius, 4)
 		
-		# Draw hint arrow with modern styling
+		# Draw hint arrow - SIMPLE
 		if self._hint_move and self._hint_move.to_idx is not None:
 			fx = self._hint_move.from_idx if self._hint_move.from_idx is not None else self._hint_move.to_idx
 			if fx is not None:
 				p1 = self.point_pos(fx)
 				p2 = self.point_pos(self._hint_move.to_idx)
-				# Draw arrow with gradient effect
 				pygame.draw.line(self.screen, theme.highlight_color, p1, p2, 6)
-				pygame.draw.line(self.screen, theme.accent_color, p1, p2, 3)
 				# Draw arrow head
 				angle = math.atan2(p2[1] - p1[1], p2[0] - p1[0])
-				arrow_size = 20
+				arrow_size = 15
 				pygame.draw.polygon(self.screen, theme.highlight_color, [
 					p2,
 					(p2[0] - arrow_size * math.cos(angle - math.pi/6), p2[1] - arrow_size * math.sin(angle - math.pi/6)),
@@ -927,7 +902,7 @@ class EnhancedUI:
 		# Draw sidebar
 		self._draw_sidebar()
 		
-		# Winner banner with modern design
+		# Winner banner
 		if self.state.winner is not None:
 			self._draw_winner_banner(theme)
 	
@@ -1061,6 +1036,42 @@ class EnhancedUI:
 			if mv.from_idx == from_idx:
 				if mv.to_idx is not None:
 					self._legal_targets.append(mv.to_idx)
+	
+	def _get_hint_move(self) -> Optional[Move]:
+		"""Get a hint for the current player"""
+		if not self.state.legal_moves():
+			return None
+		
+		# Simple hint: find a move that forms a mill or blocks opponent mill
+		legal_moves = self.state.legal_moves()
+		
+		# First priority: moves that form a mill
+		for move in legal_moves:
+			if move.to_idx is not None:
+				# Test if this move would form a mill
+				test_state = self.state.clone()
+				test_state.apply_move(move)
+				if test_state.check_mill(move.to_idx):
+					return move
+		
+		# Second priority: moves that block opponent mills
+		opponent = -self.state.to_move
+		for move in legal_moves:
+			if move.to_idx is not None:
+				# Test if this move would block opponent mill
+				test_state = self.state.clone()
+				test_state.apply_move(move)
+				test_state.to_move = opponent
+				opponent_moves = test_state.legal_moves()
+				for opp_move in opponent_moves:
+					if opp_move.to_idx is not None:
+						test_state2 = test_state.clone()
+						test_state2.apply_move(opp_move)
+						if not test_state2.check_mill(opp_move.to_idx):
+							return move
+		
+		# Fallback: return first legal move
+		return legal_moves[0] if legal_moves else None
 	
 	def _apply_and_record(self, move: Move) -> bool:
 		ok = self.state.apply_move(move)
@@ -1247,7 +1258,7 @@ class EnhancedUI:
 						elif event.key in (pygame.K_e, pygame.K_m, pygame.K_h):
 							self.set_difficulty(event.key)
 						elif event.key == pygame.K_h:
-							self._hint_move = ai_hint(self.state, self.difficulty)
+							self._hint_move = self._get_hint_move()
 						elif event.key == pygame.K_n:
 							# new game
 							self.state.reset()
