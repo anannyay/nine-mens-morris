@@ -1220,14 +1220,7 @@ class EnhancedUI:
 							break
 					else:
 						# Game screen handling
-						idx = self.nearest_point(event.pos)
-						if idx is not None and self.state.phase != "placing" and not self.state.removal_pending and self.state.board[idx] == self.state.to_move:
-							self._dragging = True
-							self._drag_from = idx
-							self._selected = idx
-							self._compute_legal_targets(idx)
-						else:
-							self.handle_click(event.pos)
+						self.handle_click(event.pos)
 				elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
 					if self.current_screen == Screen.GAME and self._dragging:
 						idx = self.nearest_point(event.pos)
