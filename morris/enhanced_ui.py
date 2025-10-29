@@ -842,8 +842,8 @@ class EnhancedUI:
 		"""Draw game board with optimized styling"""
 		theme = self._get_theme_colors()
 		
-		# Draw gradient background
-		self._draw_gradient_background(theme)
+		# Draw simple background for game board (no Aurora background)
+		self.screen.fill(theme.bg_color)
 		
 		c = theme.board_color
 		# Draw lines between adjacent points
